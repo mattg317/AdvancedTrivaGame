@@ -1,7 +1,29 @@
+body{
+	background: purple;
+}
+
 .row{
 	text-align: center
 }
 
 .container{
 	border: 1px solid black;
+	background: pink;
+	height: 1200px;
+}
+
+.questions{
+	font-family: cursive;
+	font-size: 20px;
+}
+
+button{
+	padding: 3%;
+	font-family: 'PT Sans Narrow', sans-serif;
+	background: teal;
+}
+
+.answers{
+	padding: 10px;
+	text-align: center;
 }

@@ -1,9 +1,10 @@
 $(document).ready(function(){
 console.log('ready');
 var answer 
+var core
 var i=0;
 var correctAnswers=0;
-var inorrectAnswers= 0;
+var incorrectAnswers= 0;
 var unAnswered =0;
 //Timer=========================================================================
 var timer={
@@ -27,12 +28,12 @@ var timer={
 //Questions===================================================================
 	var questions={
 	question1:{
-		quest: "1. What is the day of the week",
-		answera: 'Monday',
+		quest: "1. What is the first day of the week",
+		answera: 'Sunday',
 		answerb: 'Tuesday',
 		answerc:'Wednesday',
 		answerd: 'Friday',
-		correct: 'Monday',
+		correct: 'Sunday',
 	},
 	question2:{
 		quest: '2) Triton is a moon of which planet?',
@@ -60,21 +61,16 @@ var timer={
 	},
 	question5:{
 		quest:"5)How many soup cans are featured in Andy Warhol's famous 1962 painting,'Campbell's Soup Cans'?",
-		answera: '16',
-		answerb: '8',
-		answerc: '4',
-		answerd: '32',
-		correct: '32'
+		answera: 'Sixteen',
+		answerb: 'Eight',
+		answerc: 'Four',
+		answerd: 'Thirty-Two',
+		correct: 'Thirty-Two'
 	}
-}
-// console.log(questions.question1.quest)
-// $(".questions").html(questions.question1.quest);
-// $('.answerA').html(questions.question1.answera);
-// $('.answerA').on('click',function(){
-// 	$('.answerA').css('background','red');
-// })
+};
+
 //Question array================================================
-var qS=[questions.question1, questions.question2, questions.question3, questions.question4, questions.question5];
+var qS=[questions.question1, questions.question2, questions.question3, questions.question4, questions.question5, 'end'];
 
 //Loading questinos===========================================
 
@@ -88,6 +84,7 @@ var trivia = function(question){
 	$('.answerB').html(askAnswer2)
 	$('.answerC').html(askAnswer3)
 	$('.answerD').html(askAnswer4)
+	core = question.correct;
 
 }
 
@@ -96,57 +93,92 @@ function resultAnswer(result, question){
 	$('.questions').html(result+" the answer was "+ question);
 	$('.answers').empty();
 	run= setInterval(nextQuestion, 3000);
+	clearInterval(counter);
 
 };
 //Next Question==================================================
 function nextQuestion(){
 	i++;
-	timer.time=10;
+	timer.time=11;
 	timer.run();
 	trivia(qS[i]);
 	console.log(qS[i]);
 	clearInterval(run);
+		if(qS[i]==='end'){
+			endGame();
+		};
+};
+//End Game===================================================
+function endGame(){
+	$('.game').html("<button class='game'> New Game </button>");
+	$('.questions').empty();
+	$('.answerD').empty();
+	$('.answerA').html("Correct answers: "+correctAnswers);
+	$('.answerB').html("Incorrectanswers: "+incorrectAnswers);
+	$('.answerC').html("Un- answered questions: "+unAnswered);
+	clearInterval(counter)
+	newGame();
+
+
 }
+//New Game====================================================
+function newGame(){
+	i=0;
+	console.log(qS[i]);
+	incorrectAnswers= 0;
+	correctAnswers=0;
+};
 
 //Play the game=================================================
-$('button').on('click',function(){
+$('.game').on('click',function(){
+	$(this).empty();
+	newGame();
 	trivia(qS[i]);
-	console.log(qS[i])
+	timer.run();
 });
 
-// Needs work
 
-$('.answers').mouseover(function(){
-	$(this).css('background','red')
-})
-.mouseout(function(){
+// Highlight were mouse goesk==================================================
+
+$('.answers').bind().mouseover(function(){
 	$(this).css('background','white')
 })
+.mouseout(function(){
+	$(this).css('background','pink')
+});
 
 //Game=========================================================
 
-$('.answers').unbind().on('click','.answers',function(){
+$('.answers').on('click','.answers',function(){ //did have an unbind here but seems to work without it
 	//set choice and correct answer
+	trivia(qS[i]);
 	test = $(this).data('name');
 	core = qS[i].correct;
 	clearInterval(timer.counter);
 
 	console.log(test);
 	console.log(core);
+	//record correct answer
 	if(test===core){
 		correctAnswers++;
-		// i++;
 		resultAnswer("Correct!",core);
-		// nextQuestion();
-	}
+		console.log(i+"here");
+	}//record wrong answer
+
 	else if(test != core){
 		resultAnswer("Incorrect!!!", core);
-	}
+		incorrectAnswers++;
+		console.log(i+"here");
+	}//record no answer
+
+});//end click
+
+	//Times up
 	if(timer.time === 0){
-		resultAnswer("Times up!",core);
-	}
-})
+		resultAnswer("Times up!",qS[i].core);
+		unAnswered++;
+	};
 
 
 
-})
+});
