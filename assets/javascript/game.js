@@ -66,11 +66,19 @@ var timer={
 		answerc: 'Four',
 		answerd: 'Thirty-Two',
 		correct: 'Thirty-Two'
+	},
+	question6:{
+		quest: "6)In the 1991 film Reservoir Dogs, Michael Madson played which character?",
+		answera: "Mr. Blonde",
+		answerb: "Mr. Orange",
+		answerc: "Mr. Brown",
+		answerd: "Mr. Pink",
+		correct: "Mr. Blonde"
 	}
 };
 
 //Question array================================================
-var qS=[questions.question1, questions.question2, questions.question3, questions.question4, questions.question5, 'end'];
+var qS=[questions.question1, questions.question2, questions.question3, questions.question4, questions.question5, questions.question6, 'end'];
 
 //Loading questinos===========================================
 
@@ -114,8 +122,8 @@ function endGame(){
 	$('.questions').empty();
 	$('.answerD').empty();
 	$('.answerA').html("Correct answers: "+correctAnswers);
-	$('.answerB').html("Incorrectanswers: "+incorrectAnswers);
-	$('.answerC').html("Un- answered questions: "+unAnswered);
+	$('.answerB').html("Incorrect answers: "+incorrectAnswers);
+	$('.answerC').html("Un-Answered questions: "+unAnswered);
 	clearInterval(counter)
 	newGame();
 
